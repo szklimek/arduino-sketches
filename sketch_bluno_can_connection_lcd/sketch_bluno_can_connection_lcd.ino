@@ -9,16 +9,17 @@ boolean ledON = 1;
 MCP_CAN CAN(spiCSPin);
 
 LiquidCrystal lcd(
-  7 /* RS pin */,
-  8 /* E (enable) */,
-  5 /* D4 */,
-  4 /* D5 */,
-  3/* D6 */,
-  2/* D7 */);
+    7 /* RS pin */,
+    8 /* E (enable) */,
+    5 /* D4 */,
+    4 /* D5 */,
+    3 /* D6 */,
+    2 /* D7 */);
 
 const int contrastPin = 6;
 
-void setup() {
+void setup()
+{
   lcd.begin(16 /* Columns */, 2 /* Rows */);
   pinMode(contrastPin, OUTPUT);
 
@@ -26,7 +27,7 @@ void setup() {
   analogWrite(contrastPin, 0);
 
   Serial.begin(115200);
-  pinMode(ledPin,OUTPUT);
+  pinMode(ledPin, OUTPUT);
 
   while (CAN_OK != CAN.begin(CAN_100KBPS))
   {
@@ -36,37 +37,39 @@ void setup() {
   lcd.print("CAN BUS  Init OK!");
 }
 
-void loop() {
-//  if (Serial.available())  {
-//    String receivedString = Serial.readString();
-//
-//    // Serial.write expects C-type string
-//    char* convertedString = (char*) malloc(sizeof(char)*(receivedString.length() + 1));
-//    receivedString.toCharArray(convertedString, receivedString.length() + 1);
-//
-//    Serial.write(convertedString);
-//    Serial.println();
-//    lcd.clear();
-//    lcd.print(receivedString);
-//  }
-//  delay(1000);
+void loop()
+{
+  //  if (Serial.available())  {
+  //    String receivedString = Serial.readString();
+  //
+  //    // Serial.write expects C-type string
+  //    char* convertedString = (char*) malloc(sizeof(char)*(receivedString.length() + 1));
+  //    receivedString.toCharArray(convertedString, receivedString.length() + 1);
+  //
+  //    Serial.write(convertedString);
+  //    Serial.println();
+  //    lcd.clear();
+  //    lcd.print(receivedString);
+  //  }
+  //  delay(1000);
 
   unsigned char len = 0;
   unsigned char buf[8];
 
-  if(CAN_MSGAVAIL == CAN.checkReceive())
+  if (CAN_MSGAVAIL == CAN.checkReceive())
   {
-      CAN.readMsgBuf(&len, buf);
-      unsigned long canId = CAN.getCanId();
+    CAN.readMsgBuf(&len, buf);
+    unsigned long canId = CAN.getCanId();
 
-      Serial.println("-----------------------------");
-      Serial.print("Data from ID: 0x");
-      Serial.println(canId, HEX);
+    Serial.println("-----------------------------");
+    Serial.print("Data from ID: 0x");
+    Serial.println(canId, HEX);
 
-      for(int i = 0; i<len; i++) {
-          Serial.print(buf[i]);
-          Serial.print("\t");
-      }
-      Serial.println();
+    for (int i = 0; i < len; i++)
+    {
+      Serial.print(buf[i]);
+      Serial.print("\t");
     }
+    Serial.println();
+  }
 }
