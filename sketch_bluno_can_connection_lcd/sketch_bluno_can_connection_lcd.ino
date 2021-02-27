@@ -28,7 +28,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(ledPin,OUTPUT);
 
-  while (CAN_OK != CAN.begin(CAN_500KBPS))
+  while (CAN_OK != CAN.begin(CAN_100KBPS))
   {
     lcd.print("CAN BUS Init Failed. Retrying");
     delay(100);
